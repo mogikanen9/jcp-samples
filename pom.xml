@@ -15,6 +15,7 @@
 	<module>LogWriter</module>
 	<module>SemaphoreExample</module>
 	<module>ThreadLocal</module>
+	<module>ThreadPoolSaturation</module>	
 </modules>
 
 	<properties>

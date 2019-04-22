@@ -1,4 +1,4 @@
-package org.mogikanensoftware.play.wn;
+package org.mogikanensoftware.play.wn.example1;
 
 import java.util.Scanner;
 
@@ -64,23 +64,30 @@ class PC {
     // Sleeps for some time and waits for a key press. After key
     // is pressed, it notifies produce().
     public void consume() throws InterruptedException {
-        // this makes the produce thread to run first.
-        Thread.sleep(1000);
-        Scanner s = new Scanner(System.in);
+        Scanner s = null;
+        try {
+            // this makes the produce thread to run first.
+            Thread.sleep(1000);
+            s = new Scanner(System.in);
 
-        // synchronized block ensures only one thread
-        // running at a time.
-        synchronized (this) {
-            System.out.println("Waiting for return key.");
-            //s.nextLine();
-            System.out.println("Return key pressed");
+            // synchronized block ensures only one thread
+            // running at a time.
+            synchronized (this) {
+                System.out.println("Waiting for return key.");
+                s.nextLine();
+                System.out.println("Return key pressed");
 
-            // notifies the produce thread that it
-            // can wake up.
-            notify();
+                // notifies the produce thread that it
+                // can wake up.
+                notify();
 
-            // Sleep
-            Thread.sleep(2000);
+                // Sleep
+                Thread.sleep(2000);
+            }
+        } finally {
+            if (s != null) {
+                s.close();
+            }
         }
     }
 }

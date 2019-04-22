@@ -2,11 +2,14 @@ package org.mogikanensoftware.play.deadlock;
 
 import java.util.Random;
 
+/**
+ * By icreasing number of iteration we can "guarantee" deadlock
+ */
 
 public class DemonstrateDeadlock {
     private static final int NUM_THREADS = 20;
     private static final int NUM_ACCOUNTS = 5;
-    private static final int NUM_ITERATIONS = 1000000;
+    private static final int NUM_ITERATIONS = 100;
 
     public void transferMoney(Account fromAccount, Account toAccount, DollarAmount amount)
             throws InsufficientFundsException {

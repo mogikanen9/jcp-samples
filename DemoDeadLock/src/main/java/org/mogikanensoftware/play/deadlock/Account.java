@@ -2,7 +2,7 @@ package org.mogikanensoftware.play.deadlock;
 
 public class Account{
 
-    private static final int INIT_AMOUNT  = 100;
+    private static final int INIT_AMOUNT  = 100_000_000;
 
     private DollarAmount sum;
 

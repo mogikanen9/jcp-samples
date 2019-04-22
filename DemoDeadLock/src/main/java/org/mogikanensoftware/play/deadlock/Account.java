@@ -2,10 +2,12 @@ package org.mogikanensoftware.play.deadlock;
 
 public class Account{
 
+    private static final int INIT_AMOUNT  = 100;
+
     private DollarAmount sum;
 
     public Account(){
-        this.sum = new DollarAmount(0);
+        this.sum = new DollarAmount(INIT_AMOUNT);
     }
 
     public DollarAmount getBalance(){
@@ -13,10 +15,10 @@ public class Account{
     }
 
     public void debit(DollarAmount da){
-        
+        this.sum = new DollarAmount(this.sum.getAmount()+da.getAmount());
     }
 
     public void credit(DollarAmount da){
-        
+        this.sum = new DollarAmount(this.sum.getAmount()-da.getAmount());
     }
 }

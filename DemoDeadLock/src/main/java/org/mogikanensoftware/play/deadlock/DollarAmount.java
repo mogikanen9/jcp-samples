@@ -13,6 +13,6 @@ public class DollarAmount implements Comparable<DollarAmount>{
 
 	@Override
 	public int compareTo(DollarAmount o) {
-		return this.getAmount().compareTo(((DollarAmount)o).getAmount());
+		return this.getAmount().compareTo(o.getAmount());
 	}
 }

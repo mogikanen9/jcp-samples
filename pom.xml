@@ -16,6 +16,7 @@
 	<module>SemaphoreExample</module>
 	<module>ThreadLocal</module>
 	<module>ThreadPoolSaturation</module>	
+	<module>DemoDeadLock</module>
 </modules>
 
 	<properties>

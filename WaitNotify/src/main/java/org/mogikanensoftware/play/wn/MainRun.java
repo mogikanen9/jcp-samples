@@ -1,50 +1,86 @@
-package org.mogikanensoftware.play.tpsat;
+package org.mogikanensoftware.play.wn;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.Scanner;
 
 public class MainRun {
 
-    private static final int CAPACITY = 2;
-    private static final int N_THREADS = 2;
+    public static void main(String[] args) throws InterruptedException {
+        final PC pc = new PC();
 
-    public static void main(String[] args) {
+        // Create a thread object that calls pc.produce()
+        Thread t1 = new Thread(new Runnable() {
 
-        ThreadPoolExecutor exec = new ThreadPoolExecutor(N_THREADS, N_THREADS, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(CAPACITY));
+            @Override
+            public void run() {
+                try {
+                    pc.produce();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        exec.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        // Create another thread object that calls
+        // pc.consume()
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    pc.consume();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        for (int i = 0; i < 5; i++) {
-            exec.execute(new MyWorkThread(i));
-        }
+        // Start both threads
+        t1.start();
+        t2.start();
 
-        exec.shutdown();
+        // t1 finishes before t2
+        t1.join();
+        t2.join();
     }
 }
 
-class MyWorkThread implements Runnable {
+// PC (Produce Consumer) class with produce() and
+// consume() methods.
+class PC {
+    // Prints a string and waits for consume()
+    public void produce() throws InterruptedException {
+        // synchronized block ensures only one thread
+        // running at a time.
+        synchronized (this) {
+            System.out.println("producer thread running");
 
-    private int count;
+            // releases the lock on shared resource
+            wait();
 
-    public MyWorkThread(int count){
-        this.count = count;
-    }
-
-    @Override
-    public void run() {
-        String tName = Thread.currentThread().getName();
-        System.out.println("Doing some work in thread->" + tName + ", count->" + count);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            // and waits till some other method invokes notify().
+            System.out.println("Resumed");
         }
-        System.out.println("Work is done in thread->" + tName + ", count->" + count);
     }
 
-    
+    // Sleeps for some time and waits for a key press. After key
+    // is pressed, it notifies produce().
+    public void consume() throws InterruptedException {
+        // this makes the produce thread to run first.
+        Thread.sleep(1000);
+        Scanner s = new Scanner(System.in);
 
+        // synchronized block ensures only one thread
+        // running at a time.
+        synchronized (this) {
+            System.out.println("Waiting for return key.");
+            //s.nextLine();
+            System.out.println("Return key pressed");
+
+            // notifies the produce thread that it
+            // can wake up.
+            notify();
+
+            // Sleep
+            Thread.sleep(2000);
+        }
+    }
 }

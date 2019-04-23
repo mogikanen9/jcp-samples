@@ -18,6 +18,7 @@
 	<module>ThreadPoolSaturation</module>	
 	<module>DemoDeadLock</module>
 	<module>WaitNotify</module>
+	<module>ReadWriteLock</module>
 </modules>
 
 	<properties>

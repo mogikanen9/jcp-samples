@@ -17,6 +17,7 @@
 	<module>ThreadLocal</module>
 	<module>ThreadPoolSaturation</module>	
 	<module>DemoDeadLock</module>
+	<module>WaitNotify</module>
 </modules>
 
 	<properties>
